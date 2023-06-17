@@ -34,6 +34,7 @@ public class MenuAction {
                 System.out.println(PROMTTEXT);
                 select = scanner.nextInt();
                 getAction(select, path);
+                select=0;
             }
         } else System.out.println("File not found");
     }
