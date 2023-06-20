@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class Cryptable {
     private Path path;
+    private String resName="result.txt";
     public Cryptable(Path path){
         this.path=path;
     }
@@ -20,6 +21,7 @@ public class Cryptable {
         for (String s:list) {
             result.add(CeasarCrypt.crypt(s,key));
         }
+        resName="crypted.txt";
         createResultFile(result);
     }
     public void decyptFile(){
@@ -29,6 +31,7 @@ public class Cryptable {
         for (String s:list) {
             result.add(CeasarCrypt.decrypt(s,key));
         }
+        resName="decrypted.txt";
         createResultFile(result);
     }
     public  void brutalDecrypt() {
@@ -49,13 +52,18 @@ public class Cryptable {
         return list;
     }
     private void createResultFile(List<String> result){
-        String url = path.getParent().toString();
+        String url = path.getParent().toString()+"\\"+resName;
+
+
         try {
-            Path newFile = Files.createFile(Path.of(url+"\\result.txt"));
+            Path newFile = Path.of(url);
+            if (Files.deleteIfExists(newFile)) System.out.println("Trying to delete old file.");
+            Files.createFile(newFile);
             Files.write(newFile,result);
-            System.out.println("Створено зашифрований файл "+url+"\\result.txt");
+            System.out.println("Created crypted file "+url);
         } catch (IOException e) {
-            System.out.println("Cannot create file: "+url+"\\result.txt");
+            System.out.println("Cannot create file: "+url);
+            System.out.println(e.toString());
         }
     }
 }
