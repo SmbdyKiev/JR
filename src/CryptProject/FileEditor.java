@@ -4,7 +4,7 @@ import CryptProject.CryptAlg.Crypter;
 import CryptProject.CryptAlg.SpacedCesarCrypter;
 import CryptProject.Keys.CesarKey;
 import CryptProject.Keys.CryptKey;
-
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,44 +14,44 @@ import java.util.Scanner;
 
 public class FileEditor {
     private Path path;
-    private String resName="result.txt";
+    private String resultFileName ="result.txt";
     public FileEditor(Path path){
         this.path=path;
     }
     public void cryptFile(){
-        List<String> list=readFromFile();
+        List<String> list = readFromFile();
         CryptKey key=getKey();
-        List <String> result=new ArrayList<>();
+        List <String> result = new ArrayList<>();
         Crypter crypter = new SpacedCesarCrypter();
         for (String s:list) {
             result.add(crypter.crypt(s,key));
         }
-        resName="crypted.txt";
+        resultFileName = "crypted.txt";
         createResultFile(result);
     }
-    public void decyptFile(){
-        List<String> list=readFromFile();
-        CryptKey key=getKey();
+    public void decryptFile(){
+        List<String> list = readFromFile();
+        CryptKey key = getKey();
         Crypter crypter = new SpacedCesarCrypter();
-        List <String> result=new ArrayList<>();
+        List <String> result = new ArrayList<>();
         for (String s:list) {
             result.add(crypter.decrypt(s,key));
         }
-        resName="decrypted.txt";
+        resultFileName = "decrypted.txt";
         createResultFile(result);
     }
     public  void brutalDecrypt() {
-        List<String> list=readFromFile();
+        List<String> list = readFromFile();
         SpacedCesarCrypter crypter = new SpacedCesarCrypter();
-        List <String> result=new ArrayList<>();
+        List <String> result = new ArrayList<>();
         for (String s:list) {
-            result.add(crypter. brutalDecrypt(s));
+            result.add(crypter.brutalDecrypt(s));
         }
-        resName="decrypted.txt";
+        resultFileName = "decrypted.txt";
         createResultFile(result);
     }
     private CryptKey getKey(){
-        System.out.println("Input key from 0 to "+ SpacedCesarCrypter.MAXKEY);
+        System.out.println("Input key from 0 to "+ SpacedCesarCrypter.MAX_KEY_VALUE);
         Scanner scanner = new Scanner(System.in);
         CryptKey key= new CesarKey();
         int keyValue = scanner.nextInt();
@@ -59,7 +59,7 @@ public class FileEditor {
         return key;
     }
     private List<String> readFromFile(){
-        List<String> list =new ArrayList<>();
+        List<String> list = new ArrayList<>();
         try {
             list = Files.readAllLines(path);
         } catch (IOException e) {
@@ -68,18 +68,15 @@ public class FileEditor {
         return list;
     }
     private void createResultFile(List<String> result){
-        String url = path.getParent().toString()+"\\"+resName;
-
-
+        String url = path.getParent().toString()+File.separator+ resultFileName;
         try {
             Path newFile = Path.of(url);
             if (Files.deleteIfExists(newFile)) System.out.println("Trying to delete old file.");
             Files.createFile(newFile);
             Files.write(newFile,result);
-            System.out.println("Created result file "+url);
+            System.out.println("Created result file " + url);
         } catch (IOException e) {
-            System.out.println("Cannot create file: "+url);
-            System.out.println(e.toString());
+            System.out.println("Cannot create file: " + url);
         }
     }
 }

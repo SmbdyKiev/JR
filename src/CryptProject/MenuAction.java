@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class MenuAction {
 
-    private final String PROMTTEXT = """
+    private final String PROMT_TEXT = """
             We can do next actions with your file:
                1. Crypt yor file.
                2. Decrypt your file.
@@ -15,25 +15,26 @@ public class MenuAction {
                0. Exit.
             type number and press Enter:
             """;
-    private final String FILEDESTINATIONREQUEST = "Input full file name (incl. location):";
-    private final int CRYPTOPTION=1;
-    private final int DECRYPTOPTION=2;
-    private final int HACKOPTION=3;
-    private  final int EXITOPTION=0;
+    private final String FILE_DESTINATION_REQUEST = "Input full file name (incl. location):";
+    private final int CRYPT_OPTION = 1;
+    private final int DECRYPT_OPTION = 2;
+    private final int BRUT_FORCE_OPTION = 3;
+    private  final int EXIT_OPTION = 0;
+    private  final int UNDEFINED_OPTION = -1;
 
-    private int select=-1;
+    private int select = UNDEFINED_OPTION;
     public void proceed() {
-        System.out.println(FILEDESTINATIONREQUEST);
+        System.out.println(FILE_DESTINATION_REQUEST);
         Scanner scanner = new Scanner(System.in);
         String url = scanner.nextLine();
         Path path = Paths.get(url);
         if (Files.exists(path)) {
 
-            while (select != EXITOPTION) {
-                System.out.println(PROMTTEXT);
+            while (select != EXIT_OPTION) {
+                System.out.println(PROMT_TEXT);
                 select = scanner.nextInt();
                 getAction(select, path);
-                select=EXITOPTION;
+                select = EXIT_OPTION;
             }
         } else System.out.println("File not found");
     }
@@ -41,9 +42,9 @@ public class MenuAction {
 
     private void getAction(int selection, Path path){
         switch (selection) {
-            case CRYPTOPTION -> new FileEditor(path).cryptFile();
-            case DECRYPTOPTION -> new FileEditor(path).decyptFile();
-            case HACKOPTION -> new FileEditor(path).brutalDecrypt();
+            case CRYPT_OPTION -> new FileEditor(path).cryptFile();
+            case DECRYPT_OPTION -> new FileEditor(path).decryptFile();
+            case BRUT_FORCE_OPTION -> new FileEditor(path).brutalDecrypt();
         }
     }
 }
