@@ -13,8 +13,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileEditor {
+    private final String FILE_NAME_REQUEST= """
+    Please, input destination file name for result. 
+    It will be created in the same folder as source file.
+    Attention! If file already exist, it will be replaced.
+    Result file name (format: 'file.txt'): 
+    """;
     private Path path;
-    private String resultFileName ="result.txt";
     public FileEditor(Path path){
         this.path=path;
     }
@@ -26,7 +31,6 @@ public class FileEditor {
         for (String s:list) {
             result.add(crypter.crypt(s,key));
         }
-        resultFileName = "crypted.txt";
         createResultFile(result);
     }
     public void decryptFile(){
@@ -37,7 +41,6 @@ public class FileEditor {
         for (String s:list) {
             result.add(crypter.decrypt(s,key));
         }
-        resultFileName = "decrypted.txt";
         createResultFile(result);
     }
     public  void brutalDecrypt() {
@@ -47,7 +50,6 @@ public class FileEditor {
         for (String s:list) {
             result.add(crypter.brutalDecrypt(s));
         }
-        resultFileName = "decrypted.txt";
         createResultFile(result);
     }
     private CryptKey getKey(){
@@ -68,6 +70,9 @@ public class FileEditor {
         return list;
     }
     private void createResultFile(List<String> result){
+        String resultFileName;
+        System.out.println(FILE_NAME_REQUEST);
+        resultFileName = new Scanner(System.in).nextLine();
         String url = path.getParent().toString()+File.separator+ resultFileName;
         try {
             Path newFile = Path.of(url);
